@@ -1,0 +1,10 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/mitiendacuba/public_html/
+    - /bin/cp -R * $DEPLOYPATH
+    - /bin/cp requirements.txt $DEPLOYPATH 2>/dev/null || :
+    - /bin/cp app.py $DEPLOYPATH 2>/dev/null || :
+    - /bin/cp -R app/ $DEPLOYPATH 2>/dev/null || :
+    - /bin/cp -R templates/ $DEPLOYPATH 2>/dev/null || :
+    - /bin/cp -R static/ $DEPLOYPATH 2>/dev/null || :
