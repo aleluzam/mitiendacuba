@@ -1,15 +1,23 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Blueprint
 from dotenv import load_dotenv 
 from database import get_mysql_uri
 from database import db
 from sqlalchemy import Integer
 from models.products_models import Product
+from models.users import UserTable
+from routes.admin_users import users_bp
+from routes.admin_products import products_bd
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = get_mysql_uri()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  
+
+#Exportando los Blueprints
+app.register_blueprint(users_bp)
+app.register_blueprint(products_bd)
+
 
 db.init_app(app) # inicia la conexion con la base de datos
 
@@ -21,12 +29,6 @@ with app.app_context():
 def hello():
     return jsonify({"Message": "Bienvenido a MiTiendaCuba"}) 
 
-@app.route('/products')
-def get_products():
-    products = db.session.query(Product).all()  
-    return jsonify([p.to_dict() for p in products])
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -37,6 +39,6 @@ Para subir a git
 git init
 git commit -m "first commit"
 git branch -M main
-git remote add origin https://github.com/0rdan/mitienda_flask.git
-git push -u origin main 
+git remote add origin https://github.com/0rdan/mitiendacuba.git
+push -u origin main 
  """
