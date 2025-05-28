@@ -6,7 +6,7 @@ from sqlalchemy import Integer
 from models.products_models import Product
 from models.users import UserTable
 from routes.admin_users import users_bp
-from routes.admin_products import products_bd
+from routes.admin_products import products_bp
 
 load_dotenv()
 
@@ -16,7 +16,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 #Exportando los Blueprints
 app.register_blueprint(users_bp)
-app.register_blueprint(products_bd)
+app.register_blueprint(products_bp)
 
 
 db.init_app(app) # inicia la conexion con la base de datos

@@ -17,7 +17,7 @@ class Product(db.Model):
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text)
-    stock: int = db.Column(db.Integer, nullable=False)
+    stock = db.Column(db.Integer, nullable=False)
     subproducts = db.Column(db.Boolean, default=False)    
     
     def to_dict(self):
@@ -34,7 +34,7 @@ class Product(db.Model):
 class ProductCreate(ProductBase):
     id: int 
     stock: int = Field(ge=0)
-    subproduct: bool = Field(default=False)
+    subproducts: bool = Field(default=False)
 
 # Modelo para mostrar producto al publico    
 class ProductPublic(ProductBase):
