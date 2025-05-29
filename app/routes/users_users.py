@@ -8,7 +8,7 @@ from models.users import User
 user_bp = Blueprint("user_public", __name__, url_prefix="/user")
 
 #Obtener usaurio por id
-@user_bp.route("/get_user/<data_id>", methods=["GET"])
+@user_bp.route("/<data_id>", methods=["GET"])
 def get_user(data_id):
     verify_id = db.session.query(UserTable).filter(UserTable.user_id == data_id ).first()
     if not verify_id:
