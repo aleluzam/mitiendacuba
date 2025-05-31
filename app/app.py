@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = get_mysql_uri()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  
 
-#Exportando los Blueprints
+#Registar los Blueprints
 app.register_blueprint(users_admin_bp)
 app.register_blueprint(products_bp)
 app.register_blueprint(user_bp)

@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from database import db
-from models.users import UserTable
+from models.users_models import UserTable
 from werkzeug.security import check_password_hash
 from functools import wraps
 import jwt
