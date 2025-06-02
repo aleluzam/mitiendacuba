@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from database import db
 from typing import Optional
 
-# Modelo basico que heredaran todos
+# Modelo basico que heredan todos
 class ProductBase(BaseModel):
     name: str = Field(max_length=50)
     description: str = Field(max_length=300)
@@ -46,3 +46,4 @@ class ProductUpdate(ProductBase):
     description: str | None = None
     stock: int | None = None
     subproducts: bool | None = None
+    

@@ -17,6 +17,7 @@ class SubproductTable(db.Model):
     def to_dict(self):
         return {
             'subproduct_id': self.subproduct_id,
+            'product_id': self.product_id,
             'name': self.sub_name,
             'price': self.sub_price,
             'description': self.sub_description,

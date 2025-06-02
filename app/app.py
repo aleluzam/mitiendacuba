@@ -1,8 +1,8 @@
 from flask import Flask, jsonify
 from dotenv import load_dotenv 
 from database import get_mysql_uri, db
-from routes.admin_users import users_admin_bp
-from routes.admin_products import products_bp
+from routes.admin_users import admin_users_bp
+from routes.admin_products import admin_products_bp
 from routes.users_users import user_bp
 from routes.auth import auth_bp
 
@@ -13,8 +13,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = get_mysql_uri()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  
 
 #Registar los Blueprints
-app.register_blueprint(users_admin_bp)
-app.register_blueprint(products_bp)
+app.register_blueprint(admin_users_bp)
+app.register_blueprint(admin_products_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(auth_bp)
 
