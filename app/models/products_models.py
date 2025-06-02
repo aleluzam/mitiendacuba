@@ -10,10 +10,10 @@ class ProductBase(BaseModel):
     price: float = Field(ge=0)
 
 # Clase para crear la tabla de los productos
-class Product(db.Model):
+class ProductTable(db.Model):
     __tablename__ = 'products'
     
-    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text)
@@ -22,7 +22,7 @@ class Product(db.Model):
     
     def to_dict(self):
         return {
-            'id': self.id,
+            'product_id': self.product_id,
             'name': self.name,
             'price': self.price,
             'description': self.description,
@@ -32,7 +32,6 @@ class Product(db.Model):
     
 # Modelo para crear un nuevo producto    
 class ProductCreate(ProductBase):
-    id: int 
     stock: int = Field(ge=0)
     subproducts: bool = Field(default=False)
 
