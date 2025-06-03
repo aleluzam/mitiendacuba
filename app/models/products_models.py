@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from database import db
 from typing import Optional
 
@@ -34,6 +34,9 @@ class ProductTable(db.Model):
 class ProductCreate(ProductBase):
     stock: int = Field(ge=0)
     subproducts: bool = Field(default=False)
+    
+    model_config = ConfigDict(from_attributes=True)
+
 
 # Modelo para mostrar producto al publico    
 class ProductPublic(ProductBase):

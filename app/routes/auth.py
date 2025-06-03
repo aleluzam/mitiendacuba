@@ -40,12 +40,12 @@ def create_user():
         password_hash = generate_password_hash(data['password'])
         
         new_user = UserTable(
-            username=data['username'].lower().strip(),
-            password_hash=password_hash,
-            name=data['name'].strip().title(),
-            last_name=data['last_name'].strip().title(),
-            mobile=data.get('mobile'), 
-            is_active=True
+            username = data['username'].lower().strip(),
+            password_hash = password_hash,
+            name = data['name'].strip().title(),
+            last_name = data['last_name'].strip().title(),
+            mobile = data.get('mobile'), 
+            is_active = True
         )
         
         db.session.add(new_user)
@@ -60,7 +60,6 @@ def create_user():
                 'name': new_user.name,
                 'last_name': new_user.last_name,
                 'mobile': new_user.mobile,
-                'created_at': new_user.created_at.isoformat(),
                 'is_active': new_user.is_active
             }
         }), 201

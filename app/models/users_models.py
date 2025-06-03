@@ -14,7 +14,6 @@ class UserTable(db.Model):
     name = db.Column(db.String(15), nullable=False)
     last_name = db.Column(db.String(15), nullable=False)
     mobile = db.Column(db.String(15), nullable=True)  
-    created_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))    
     is_active = db.Column(db.Boolean, default=True, nullable=False)  
 
     def to_dict(self):
@@ -24,7 +23,6 @@ class UserTable(db.Model):
             'name': self.name,
             'last_name': self.last_name,
             'mobile': self.mobile,
-            'created_at': self.created_at.isoformat() if self.created_at else None,
             'is_active': self.is_active
         }
     

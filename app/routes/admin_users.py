@@ -10,7 +10,6 @@ admin_users_bp = Blueprint("users", __name__, url_prefix="/admin")
 
 # Mostrar todos los usuarios existentes
 @admin_users_bp.route("/all_users")
-@login_required
 def get_all_users():
     users = db.session.query(UserTable).all()
     return jsonify([p.to_dict() for p in users])
