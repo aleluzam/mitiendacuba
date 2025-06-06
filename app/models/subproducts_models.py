@@ -33,15 +33,16 @@ class SubproductPublic(SubproductBase):
     
 # Para crear nuevo subproducto
 class SubproductCreate(SubproductBase):
-    stock: int
+    sub_stock: int
     product_id: int 
     
 # Para actualizar un subproducto
-class ProductUpdate(SubproductBase):
+class SubproductUpdate(SubproductBase):
     sub_name: str | None = None
     sub_description: str | None = None
     sub_stock: int | None = None
     product_id: int | None = None
+    
     
     
 

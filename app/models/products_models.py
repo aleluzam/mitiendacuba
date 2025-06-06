@@ -30,6 +30,18 @@ class ProductTable(db.Model):
             'subproducts': self.subproducts
         }
     
+    def to_public(self):
+        return {
+            'name': self.name,
+            'price': self.price,
+            'description': self.description,
+            'stock': self.stock,
+            'subproducts': self.subproducts
+        }
+
+
+    
+        
 # Modelo para crear un nuevo producto    
 class ProductCreate(ProductBase):
     stock: int = Field(ge=0)
@@ -41,6 +53,9 @@ class ProductCreate(ProductBase):
 # Modelo para mostrar producto al publico    
 class ProductPublic(ProductBase):
     stock: int 
+    subproducts: bool = Field(default=False)
+
+
 
 # Modelo para actualizar un producto
 class ProductUpdate(ProductBase):

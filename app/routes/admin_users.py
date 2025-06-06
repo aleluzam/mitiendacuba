@@ -4,17 +4,19 @@ from models.users_models import UserCreate, User, UserTable
 from datetime import datetime, UTC
 from security import login_required
 
-admin_users_bp = Blueprint("users", __name__, url_prefix="/admin")
+admin_users_bp = Blueprint("admin_users", __name__, url_prefix="/admin")
 
 
 
-# Mostrar todos los usuarios existentes
+# MOSTRAR TODOS LOS USUARIOS (ADMIN)
 @admin_users_bp.route("/all_users")
 def get_all_users():
     users = db.session.query(UserTable).all()
     return jsonify([p.to_dict() for p in users])
 
-#Obtener usaurio por id (para admin)
+
+
+# OBTENER USUARIO POR ID (ADMIN)
 @admin_users_bp.route("/user/<data_id>", methods=["GET"])
 def get_user(data_id):
     user = db.session.query(UserTable).filter(UserTable.user_id == data_id ).first()
@@ -22,8 +24,10 @@ def get_user(data_id):
         return jsonify({"error": "ID incorrecta"}), 400
     else: 
         return jsonify(user.to_dict())
+    
+    
 
-# Eliminar usuario por id (para admin)
+# ELIMINAR USUARIO POR ID (ADMIN)
 @admin_users_bp.route("/user/delete/<data_id>", methods=["DELETE"])
 def delete_user(data_id):
     verify_id = db.session.query(UserTable).filter(UserTable.user_id == data_id ).first()
