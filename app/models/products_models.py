@@ -19,6 +19,7 @@ class ProductTable(db.Model):
     description = db.Column(db.Text)
     stock = db.Column(db.Integer, nullable=False)
     subproducts = db.Column(db.Boolean, default=False)    
+    subproducts_list = db.relationship("SubproductTable", backref = "product", lazy = "joined")
     
     def to_dict(self):
         return {
@@ -35,9 +36,18 @@ class ProductTable(db.Model):
             'name': self.name,
             'price': self.price,
             'description': self.description,
-            'stock': self.stock,
-            'subproducts': self.subproducts
+            'stock': self.stock
         }
+    
+    def to_all(self):
+        return {
+            'name': self.name,
+            'price': self.price,
+            'description': self.description,
+            'stock': self.stock,
+            'subproducts_list': [p.to_public() for p in self.subproducts_list] if self.subproducts_list else None
+        }
+
 
 
     

@@ -21,6 +21,13 @@ class SubproductTable(db.Model):
             'description': self.sub_description,
             'stock': self.sub_stock
         }
+    def to_public(self):
+        return {
+            'name': self.sub_name,
+            'description': self.sub_description,
+            'stock': self.sub_stock
+        }
+
 
 # La que todos heredan
 class SubproductBase(BaseModel):
