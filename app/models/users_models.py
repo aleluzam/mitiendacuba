@@ -25,7 +25,15 @@ class UserTable(db.Model):
             'mobile': self.mobile,
             'is_active': self.is_active
         }
-    
+        
+    def to_public(self):
+        return {
+            'username': self.username,
+            'name': self.name,
+            'last_name': self.last_name,
+            'mobile': self.mobile,
+        }
+
     def __repr__(self):
         return f'<User {self.username}>'
 
@@ -53,7 +61,7 @@ class UserUpdate(BaseModel):
     name: str | None = Field(min_length=2, max_length=15, default=None)
     last_name: str | None = Field(min_length=2, max_length=15, default=None)
     mobile: str | None = Field(max_length=15, default=None)
-    password: str | None = Field(min_length=8, max_length=128, default=None)
+    
     
     
 
@@ -63,5 +71,13 @@ class Users(User):
     is_active: bool
     
     model_config = ConfigDict(from_attributes=True)
+    
+    
+    
+class UserNewPassword(BaseModel):
+    new_password: str = Field(min_length=8, max_length=128)
+    mobile: str | None = Field(max_length=15, default=None)
+
+
 
 

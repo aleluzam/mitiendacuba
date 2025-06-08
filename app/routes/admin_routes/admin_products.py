@@ -12,6 +12,7 @@ admin_products_bp = Blueprint("admin_products", __name__, url_prefix="/admin")
 
 # MOSTRAR TODOS LOS PRODUCTOS (ADMIN)
 @admin_products_bp.route('/all_products', methods=["GET"])
+@login_required
 def get_products():
     products = db.session.query(ProductTable).all()  
     return jsonify([p.to_dict() for p in products])

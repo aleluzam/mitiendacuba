@@ -19,3 +19,22 @@ def get_all_products():
             "details": str(e)
         }), 500
     
+    
+    
+# MOSTRAR UN PRODUCTO POR ID (USER)
+@user_products_bp.route("/product/<product_id>", methods = ["GET"])    
+def get_product(product_id):
+    try:
+        product = db.session.query(ProductTable).filter(ProductTable.product_id == product_id).first()
+        if not product:
+            return jsonify ({"mensaje": f"No existe producto de id {product_id}"}), 404
+        return jsonify (product.to_public())
+  
+    except Exception as e:
+        db.session.rollback()  
+        return jsonify({
+            "error": "Error interno del servidor",
+            "details": str(e)
+        }), 500
+
+    

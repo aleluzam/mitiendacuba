@@ -3,6 +3,14 @@ from flask import jsonify, request
 from models.products_models import ProductTable
 from models.subproducts_models import SubproductTable
 from sqlalchemy import func
+import jwt
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY")
+
+
 
 # Calcular el stock total de producto sumando subproductos
 def update_product_from_subproducts(product_id):
@@ -20,6 +28,24 @@ def update_product_from_subproducts(product_id):
         db.session.rollback()
         raise e    
     
+
+
+# OBTENER ID DE TOKEN DE USUARIO AUTENTICADO
+def get_id_from_jwt():
+    auth_header = request.headers.get("Authorization")
+    if not auth_header:
+        return None
+    try:
+        token = auth_header.split(" ")[1]
+        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        user_id = payload["user_id"]
+        return user_id
+    
+    except Exception as e:
+        return None
+    
+
+        
             
     
 
