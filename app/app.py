@@ -7,6 +7,7 @@ from routes.admin_routes.admin_subproducts import admin_subproducts_bp
 from routes.auth import auth_bp
 from routes.user_routes.user_products import user_products_bp
 from routes.user_routes.user_users import user_users_bp
+from routes.admin_routes.admin_sales import admin_sales_bp
 
 load_dotenv()
 
@@ -21,6 +22,7 @@ app.register_blueprint(admin_subproducts_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(user_products_bp)
 app.register_blueprint(user_users_bp)
+app.register_blueprint(admin_sales_bp)
 
 
 

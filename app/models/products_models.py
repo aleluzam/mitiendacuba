@@ -1,4 +1,3 @@
-from flask_sqlalchemy import SQLAlchemy
 from pydantic import BaseModel, Field, ConfigDict
 from database import db
 from typing import Optional
