@@ -2,6 +2,7 @@ from flask import request, jsonify, Blueprint
 from database import db
 from models.products_models import ProductPublic, ProductTable
 from pydantic import ValidationError
+from security import login_required
 
 user_products_bp = Blueprint("user_products", __name__, url_prefix="/user")
 
@@ -9,6 +10,7 @@ user_products_bp = Blueprint("user_products", __name__, url_prefix="/user")
 
 # MOSTRAR PRODUCTOS CON RESPECTIVOS SUBPRODUCTOS
 @user_products_bp.route("/all_products", methods = ["GET"])
+@login_required
 def get_all():
     try:
         data = db.session.query(ProductTable).all()

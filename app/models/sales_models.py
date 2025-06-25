@@ -30,8 +30,14 @@ class SaleTable(db.Model):
             'items': [p.to_dict() for p in self.items]
         }
 
-    
-    
+    def to_user(self):
+        return {
+            'sale_id': self.sale_id,
+            'total_amount': self.total_amount,
+            'created_at': self.created_at,
+            'items': [p.to_dict() for p in self.items]
+        }
+
     
     
 ### TABLA VENTA_ITEMS
