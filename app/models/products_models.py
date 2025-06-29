@@ -19,6 +19,7 @@ class ProductTable(db.Model):
     stock = db.Column(db.Integer, nullable=False)
     subproducts = db.Column(db.Boolean, default=False)    
     subproducts_list = db.relationship("SubproductTable", backref = "product", lazy = "joined")
+    limit_stock = db.Column(db.Integer, nullable = False)
     
     def to_dict(self):
         return {
