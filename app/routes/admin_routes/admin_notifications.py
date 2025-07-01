@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, Blueprint
 from database import db
 from models.notifications_models import NotificationTable
+<<<<<<< HEAD
 from models.products_models import ProductTable
 from zoneinfo import ZoneInfo
 from datetime import datetime
@@ -11,12 +12,18 @@ admin_notifications_bp = Blueprint("notifications", __name__, url_prefix=("/admi
 
 
 # VER TODAS LAS NOTIFICACIONES
+=======
+
+admin_notifications_bp = Blueprint("notifications", __name__, url_prefix=("/admin"))
+
+>>>>>>> c037a7696cf69cd473c9a034f71011fc11f43ed0
 @admin_notifications_bp.route("/all_notifications", methods = ["GET"])
 def all_notifications():
     notifications = db.session.query(NotificationTable).all()
     return jsonify ([p.to_admin() for p in notifications])
 
 
+<<<<<<< HEAD
 # CREAR UNA NOTIFICACION POR STOCK LIMITE
 def stock_notification(product_id):
     try:
@@ -53,4 +60,6 @@ def stock_notification(product_id):
 
 
 
+=======
+>>>>>>> c037a7696cf69cd473c9a034f71011fc11f43ed0
 
