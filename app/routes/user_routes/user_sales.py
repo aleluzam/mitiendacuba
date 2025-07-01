@@ -1,26 +1,25 @@
-from flask import Blueprint, jsonify, request
+from flask import Flask, Blueprint, jsonify
 from database import db
 from dependencies import get_id_from_jwt
 from models.sales_models import SaleTable
 
-user_sales_bp = Blueprint("user_sales", __name__, url_prefix = ("/user"))
+user_sales_bp = Blueprint("user_sales", __name__, url_prefix=("/user"))
 
-# VER MI HISTORIAL DE COMPRAS
+# Ver mi historial de compras
 @user_sales_bp.route("/my_profile/my_purchases", methods = ["GET"])
-def get_my_sales():
+def get_my_purchases():
     user_id = get_id_from_jwt()
     if not user_id:
-        return jsonify ({"error": "Token invalido o requerido"}), 401
+        return jsonify({"error": "Token requerido o invalido"}), 401
     try:
-        sales = db.session.query(SaleTable).filter(SaleTable.user_id == user_id).all()
-        if not sales:
-            return jsonify ({"mensaje": "Historial de compras vacio"})
-        return jsonify ([s.to_user() for s in sales])
+        purchases = db.session.query(SaleTable).filter(SaleTable.user_id == user_id).all()
+        if not purchases:
+            return jsonify ({"mensaje": "Su historial de compras esta vacio"})
+        return jsonify ([s.to_user() for s in purchases])
     
     except Exception as e:
+        db.session.rollback()  
         return jsonify({
             "error": "Error interno del servidor",
             "details": str(e)
         }), 500
-
-    
