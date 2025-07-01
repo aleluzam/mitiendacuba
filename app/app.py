@@ -10,13 +10,10 @@ from routes.auth import auth_bp
 from routes.user_routes.user_products import user_products_bp
 from routes.user_routes.user_users import user_users_bp
 from routes.user_routes.user_sales import user_sales_bp
-<<<<<<< HEAD
 from mail_services import mail_bp
 from flask_mail import Mail, Message
 import os
 
-=======
->>>>>>> c037a7696cf69cd473c9a034f71011fc11f43ed0
 load_dotenv()
 
 
@@ -48,11 +45,7 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(user_products_bp)
 app.register_blueprint(user_users_bp)
 app.register_blueprint(user_sales_bp)
-<<<<<<< HEAD
 app.register_blueprint(mail_bp)
-=======
->>>>>>> c037a7696cf69cd473c9a034f71011fc11f43ed0
-
 
 db.init_app(app) # inicia la conexion con la base de datos
 
