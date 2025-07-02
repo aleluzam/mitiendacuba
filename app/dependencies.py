@@ -6,6 +6,7 @@ from sqlalchemy import func
 import jwt
 from dotenv import load_dotenv
 import os
+import secrets
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -44,8 +45,10 @@ def get_id_from_jwt():
     except Exception as e:
         return None
     
-
-        
+# GENERAR UN NUMERO DE 6 DIGITOS RANDOMS
+def generate_reset_code():
+    return secrets.randbelow(900000) + 100000
+       
             
     
 

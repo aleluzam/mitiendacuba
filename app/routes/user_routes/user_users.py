@@ -57,7 +57,8 @@ def edit_profile():
                              "username": to_edit.username,
                              "name": to_edit.name,
                              "last_name": to_edit.last_name,
-                             "mobile": to_edit.mobile
+                             "mobile": to_edit.mobile,
+                             "mail": to_edit.mail
                          }})
     except ValidationError as e:
         return jsonify({
@@ -100,46 +101,4 @@ def delete_user():
 
                     
 # RESTABLECER CONTRASEÑA
-@user_users_bp.route("/my_profile/reset_password", methods = ["PATCH", "PUT"])
-def change_password():
-    user_id = get_id_from_jwt()
-    if not user_id:
-        return jsonify ({"Error": "Token requerido o invalido"}), 401
-    
-    try:
-        data = UserNewPassword.model_validate(request.get_json())
-
-        user = db.session.query(UserTable).filter(UserTable.user_id == user_id).first()
-        if not user:
-            return jsonify({"error": "Usuario no encontrado"}), 404        
-        
-        if data.mobile != user.mobile:
-            return jsonify ({"mensaje": "Numero movil incorrecto"}), 400
-
-        if check_password_hash(user.password_hash, data.new_password):
-            return jsonify ({"mensaje": "Inotroduzca una contraseña diferente a la anterior"}), 400
-        
-        password_hashed = generate_password_hash(data.new_password)
-        user.password_hash = password_hashed
-        db.session.commit()
-        return jsonify ({"mensaje": "Su contraseña fue restablecida con exito"})
-
-    except ValidationError as e:
-        return jsonify ({"mensaje": "Numero telefonico o nueva contraseña invalidos",
-                         "error": str(e)}), 400
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({
-            "error": "Error interno del servidor",
-            "details": str(e)
-        }), 500
-
-
-        
-    
-
-        
-    
-             
-
 

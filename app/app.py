@@ -10,7 +10,7 @@ from routes.auth import auth_bp
 from routes.user_routes.user_products import user_products_bp
 from routes.user_routes.user_users import user_users_bp
 from routes.user_routes.user_sales import user_sales_bp
-from mail_services import mail_bp
+from routes.mail_codes import mail_codes_bp
 from flask_mail import Mail, Message
 import os
 
@@ -45,7 +45,7 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(user_products_bp)
 app.register_blueprint(user_users_bp)
 app.register_blueprint(user_sales_bp)
-app.register_blueprint(mail_bp)
+app.register_blueprint(mail_codes_bp)
 
 db.init_app(app) # inicia la conexion con la base de datos
 

@@ -15,6 +15,8 @@ class UserTable(db.Model):
     last_name = db.Column(db.String(15), nullable=False)
     mobile = db.Column(db.String(15), nullable=True)  
     is_active = db.Column(db.Boolean, default=True, nullable=False)  
+    mail = db.Column(db.String(120), unique = True, nullable = False)
+    
 
     def to_dict(self):
         return {
@@ -23,7 +25,8 @@ class UserTable(db.Model):
             'name': self.name,
             'last_name': self.last_name,
             'mobile': self.mobile,
-            'is_active': self.is_active
+            'is_active': self.is_active,
+            'mail': self.mail
         }
         
     def to_public(self):
@@ -32,6 +35,7 @@ class UserTable(db.Model):
             'name': self.name,
             'last_name': self.last_name,
             'mobile': self.mobile,
+            'mail': self.mail
         }
 
     def __repr__(self):
@@ -52,6 +56,7 @@ class UserCreate(BaseModel):
     last_name: str = Field(min_length=2, max_length=15)
     mobile: str | None = Field(max_length=15, default=None)  
     password: str = Field(min_length=8, max_length=128)
+    mail: str = Field(min_length=10, max_length=120)
     
     model_config = ConfigDict(from_attributes=True)
     
@@ -61,6 +66,7 @@ class UserUpdate(BaseModel):
     name: str | None = Field(min_length=2, max_length=15, default=None)
     last_name: str | None = Field(min_length=2, max_length=15, default=None)
     mobile: str | None = Field(max_length=15, default=None)
+    mail: str | None = Field(max_length=120, default= None)
     
     
     

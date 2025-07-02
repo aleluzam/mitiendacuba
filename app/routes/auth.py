@@ -7,6 +7,9 @@ import os
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash
 from models.users_models import UserTable
+from models.codes_models import CodeTable
+from dependencies import generate_reset_code
+import secrets
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -44,8 +47,9 @@ def create_user():
             password_hash = password_hash,
             name = data['name'].strip().title(),
             last_name = data['last_name'].strip().title(),
-            mobile = data.get('mobile'), 
-            is_active = True
+            mobile = data.get('mobile'), # puede ser None
+            is_active = True,
+            mail = data['mail'] # lanza error si no existe
         )
         
         db.session.add(new_user)
@@ -60,7 +64,8 @@ def create_user():
                 'name': new_user.name,
                 'last_name': new_user.last_name,
                 'mobile': new_user.mobile,
-                'is_active': new_user.is_active
+                'is_active': new_user.is_active,
+                'mail': new_user.mail
             }
         }), 201
     except Exception as e:
@@ -115,4 +120,15 @@ def login():
         return jsonify({"error": f"Error interno: {str(e)}"}), 500
         
     
-    
+### RESTABLECER PASSWORD
+
+@auth_bp.route("/all_codes")
+def get_all_codes():
+    try:
+        codes = db.session.query(CodeTable).all()
+        return jsonify ([p.to_admin() for p in codes])
+    except Exception as e:
+        return jsonify({"error": f"Error interno: {str(e)}"}), 500
+
+
+
