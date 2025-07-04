@@ -4,6 +4,8 @@ from dependencies import get_id_from_jwt
 from database import db
 from pydantic import ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
+from security import user_only
+
 
 user_users_bp = Blueprint("user_users", __name__, url_prefix=("/user"))
 
@@ -100,5 +102,44 @@ def delete_user():
         }), 500
 
                     
-# RESTABLECER CONTRASEÑA
+# RESTABLECER CONTRASEÑA DE MI PERFIL
+@user_users_bp.route("/my_profile/change_password", methods = ["PUT", "PATCH"])
+def change_password():
+    
+    user_id = get_id_from_jwt()
+    if not user_id:
+        return jsonify ({"error": "Token requerido o invalido"}), 401
+    
+    data = request.get_json()
+    if not data:
+        return jsonify ({"error": "Datos requeridos"}), 400
+    actual_password = data["actual_password"]
+    if not actual_password:
+        return jsonify ({"error": "Contraseña actual requerida"}), 400
+    new_password = data["new_password"]
+    if not new_password:
+        return jsonify ({"error": "Nueva contraseña requerida"}), 400
+    
+    try:
+        user = db.session.query(UserTable).filter(UserTable.user_id == user_id).first()
+        if not user:
+            return jsonify ({"error": "Usuario no encontrado"}), 404
+        verify_password = check_password_hash(user.password_hash, actual_password)
+        if not verify_password:
+            return jsonify ({"error": "Contraseña actual incorrecta"}), 400
+        
+        new_password_hash = generate_password_hash(new_password)
+        user.password_hash = new_password_hash
+        db.session.commit()
+        return jsonify ({"message": "Contraseña cambiada con exito",
+                         "logout": True}) # avisa al front que tiene que cerrar sesion
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "error": "Error interno del servidor",
+            "details": str(e)
+        }), 500
+    
+    
 

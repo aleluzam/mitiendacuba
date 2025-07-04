@@ -6,6 +6,7 @@ from functools import wraps
 import jwt
 import os
 from dotenv import load_dotenv
+from dependencies import get_id_from_jwt
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -50,5 +51,54 @@ def login_required(f):
         #except jwt.InvalidTokenError:
             #return jsonify({"message": "Token invalido"}), 401  #           
         return f(*args, **kwargs) 
-    return decorated                            
+    return decorated 
+
+
+
+# DECORADOR PARA SOLO ADMINS
+def admin_only(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        user_id = get_id_from_jwt()
+        if not user_id:
+            return jsonify ({"error": "Token invalido o requerido"}), 401
+        try:
+            user = db.session.query(UserTable).filter(UserTable.user_id == user_id).first()
+            if not user:
+                return jsonify ({"error": "Usuario no encontrado"}), 404
+            if user.role != "admin":
+                return jsonify ({"error": "Acceso denegado. Solo para admins"}), 403 # FORBIDDEN prohibido
+            
+            return f(*args, **kwargs)
+        
+        except Exception as e:
+            return jsonify({"error": f"Error interno: {str(e)}"}), 500
+    return decorated
+
+
+
+# DECORADOR PARA SOLO USERS
+def user_only(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        user_id = get_id_from_jwt()
+        if not user_id:
+            return jsonify ({"error": "Token invalido o requerido"}), 401
+        try:
+            user = db.session.query(UserTable).filter(UserTable.user_id == user_id).first()
+            if not user:
+                return jsonify ({"error": "Usuario no encontrado"}), 404
+            if user.role != "user":
+                return jsonify ({"error": "Acceso denegado. Solo para users"}), 403 # FORBIDDEN prohibido
+            
+            return f(*args, **kwargs)
+        
+        except Exception as e:
+            return jsonify({"error": f"Error interno: {str(e)}"}), 500
+    return decorated
+    
+    
+                
+        
+
         

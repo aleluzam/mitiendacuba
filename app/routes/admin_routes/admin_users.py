@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from database import db
 from models.users_models import UserCreate, User, UserTable
 from datetime import datetime, UTC
-from security import login_required
+from security import login_required, admin_only
 
 admin_users_bp = Blueprint("admin_users", __name__, url_prefix="/admin")
 

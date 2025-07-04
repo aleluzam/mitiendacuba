@@ -5,6 +5,7 @@ from dependencies import generate_reset_code
 from mail_services import send_mail, send_mail_async
 from models.users_models import UserTable
 from datetime import datetime, timezone, tzinfo
+from werkzeug.security import generate_password_hash
 
 mail_codes_bp = Blueprint("codes", __name__, url_prefix= ("/auth"))
 
@@ -51,75 +52,48 @@ def verify_mail_and_send_code():
         db.session.rollback()
         return jsonify({
             "success": False, 
-            "message": f"Error al enviar correo de prueba: {str(e)}"
+            "message": f"Error al enviar correo: {str(e)}"
         })
 
 
-# VERIFICAR SI EL CODIGO ES CORRECTO
-@mail_codes_bp.route("/verify_code", methods = ["POST"])
+# VERIFICAR SI EL CODIGO ES CORRECTO, CAMBIAR CONTRASEÑA
+@mail_codes_bp.route("/verify_code", methods = ["PUT", "PATCH"])
 def verify_code():
-    code = request.get_json()
-    if not code or "code" not in code:
-        return jsonify({"valid": False, 
-                        "error": "Codigo requerido"}), 400
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Datos requeridos"}), 400
+    
+    if "code" not in data or not data["code"]:
+        return jsonify ({"error": "Codigo requerido"}), 400
+    
+    if "new_password" not in data or not data["new_password"]:
+         return jsonify ({"error": "Introduzca nueva contraseña"}), 400 
+     
+    code = data["code"]
+    new_password = data["new_password"]
+    
     try:
-        code = code["code"]
         verify_code = db.session.query(CodeTable).filter(CodeTable.code == code, CodeTable.used == False).first()
         if not verify_code:
-            return jsonify ({"valid": False,
-                             "error": "Codigo inexistente o usado"}), 404
+            return jsonify ({"error": "Codigo inexistente o usado"}), 404
         current_time = datetime.now(timezone.utc)
         expires_at = verify_code.expires_at
         if expires_at.tzinfo is None:
             expires_at = expires_at.replace(tzinfo = timezone.utc)   
         if current_time > expires_at:
-            return jsonify ({"valid": False,
-                             "error": "Codigo expirado"}), 410 # GONE expirado
+            return jsonify ({"error": "Codigo expirado"}), 410 # GONE expirado
         verify_code.used = True
+        db.session.flush()
+        user = db.session.query(UserTable).filter(UserTable.user_id == verify_code.user_id).first()
+        if not user:
+            return jsonify ({"error": "Usuario no encontrado"}), 404
+        password_hash = generate_password_hash(new_password)
+        user.password_hash = password_hash
         db.session.commit()
-        return jsonify ({"valid": True,
-                         "message": "Codigo valido"})
+        return jsonify ({"message": "Contraseña cambiada satisfactoriamente"})
+   
     except Exception as e:
         db.session.rollback()
-        return jsonify({
-            "valid": False, 
-            "message": f"Error: {str(e)}"
-        }), 500
+        return jsonify({"error": f"Error: {str(e)}"}), 500
         
-        
-
-# END DE PRUEBA
-@mail_codes_bp.route("/test", methods = ["POST"])
-def test_mail():
-    try:
-        code = generate_reset_code()
-        mail = "alzzla2004@gmail.com"
-        user_mail = db.session.query(UserTable).filter(UserTable.mail == mail).first()
-        
-        resultado = send_mail(
-            email = mail,
-            html_body=f"<h2>CODIGO PARA RESTABLECER PASSWORD</h2><p>Tu codigo es {code}</p>"
-        )
-        
-        new_code = CodeTable(
-            code = code,
-            user_id = user_mail.user_id
-        )
-        db.session.add(new_code)
-        db.session.commit()
-        
-        return jsonify({
-            "success": True, 
-            "message": f"Correo de prueba enviado a {mail}"
-        })
-        
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({
-            "success": False, 
-            "message": f"Error al enviar correo de prueba: {str(e)}"
-        })
-
-        
-        
-        
+    

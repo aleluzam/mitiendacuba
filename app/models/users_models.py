@@ -16,6 +16,7 @@ class UserTable(db.Model):
     mobile = db.Column(db.String(15), nullable=True)  
     is_active = db.Column(db.Boolean, default=True, nullable=False)  
     mail = db.Column(db.String(120), unique = True, nullable = False)
+    role = db.Column(db.String(10), nullable = False, default = "user")
     
 
     def to_dict(self):
@@ -26,7 +27,8 @@ class UserTable(db.Model):
             'last_name': self.last_name,
             'mobile': self.mobile,
             'is_active': self.is_active,
-            'mail': self.mail
+            'mail': self.mail,
+            'role': self.role
         }
         
     def to_public(self):
