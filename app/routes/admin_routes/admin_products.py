@@ -5,7 +5,7 @@ from models.subproducts_models import SubproductTable
 from security import login_required
 from dependencies import update_product_from_subproducts
 from pydantic import ValidationError
-from routes.admin_routes.admin_notifications import stock_notification
+from routes.admin_routes.admin_alerts import stock_alerts
 
 admin_products_bp = Blueprint("admin_products", __name__, url_prefix="/admin")
 

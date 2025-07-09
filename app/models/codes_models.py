@@ -3,6 +3,8 @@ from datetime import datetime, timezone, timedelta
 
 
 class CodeTable(db.Model):
+    __tablename__ = 'codes'
+    
     code_id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, nullable = False)
     code = db.Column(db.Integer, nullable = False)

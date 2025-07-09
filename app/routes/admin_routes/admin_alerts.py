@@ -1,30 +1,29 @@
 from flask import Flask, jsonify, Blueprint
 from database import db
-from models.notifications_models import NotificationTable
+from models.alerts_models import AlertTable
 from models.products_models import ProductTable
 from zoneinfo import ZoneInfo
 from datetime import datetime
 
 cuba_tz = ZoneInfo('America/Havana')
 
-admin_notifications_bp = Blueprint("notifications", __name__, url_prefix=("/admin"))
+admin_alerts_bp = Blueprint("alerts", __name__, url_prefix=("/admin"))
 
-# VER TODAS LAS NOTIFICACIONES
-admin_notifications_bp = Blueprint("notifications", __name__, url_prefix=("/admin"))
-@admin_notifications_bp.route("/all_notifications", methods = ["GET"])
-def all_notifications():
-    notifications = db.session.query(NotificationTable).all()
-    return jsonify ([p.to_admin() for p in notifications])
+# VER TODAS LAS ALERTAS
+@admin_alerts_bp.route("/all_alerts", methods = ["GET"])
+def all_alerts():
+    alerts = db.session.query(AlertTable).all()
+    return jsonify ([p.to_admin() for p in alerts])
 
-# CREAR UNA NOTIFICACION POR STOCK LIMITE
-def stock_notification(product_id):
+# CREAR UNA ALERTA POR STOCK LIMITE
+def stock_alerts(product_id):
     try:
         product = db.session.query(ProductTable).filter(ProductTable.product_id == product_id).first()
         if product.stock <= product.limit_stock:
-            validate_notification = db.session.query(NotificationTable).filter(NotificationTable.product_id == product_id).first()
-            if not validate_notification:
+            validate_alert = db.session.query(AlertTable).filter(AlertTable.product_id == product_id).first()
+            if not validate_alert:
                 
-                new_notification = NotificationTable(
+                new_alert = AlertTable(
                     product_id = product.product_id,
                     product_name = product.name,
                     message = "Baja cantidad de stock del producto",
@@ -32,10 +31,10 @@ def stock_notification(product_id):
                     limit_stock = product.limit_stock,
                     created_at = datetime.now(cuba_tz),
                 )
-                db.session.add(new_notification)
+                db.session.add(new_alert)
                 db.session.commit()
             else:
-                validate_notification.actual_stock = product.stock
+                validate_alert.actual_stock = product.stock
                 db.session.commit()
                 
     except Exception as e:
