@@ -9,7 +9,11 @@ from routes.admin_routes.admin_alerts import stock_alerts
 
 admin_products_bp = Blueprint("admin_products", __name__, url_prefix="/admin")
 
-# PRODUCTOS
+
+
+### PRODUCTOS ###
+
+
 
 # MOSTRAR TODOS LOS PRODUCTOS (ADMIN)
 @admin_products_bp.route('/all_products', methods=["GET"])
@@ -44,7 +48,8 @@ def create_product():
             description = data.description,
             stock = data.stock,
             subproducts = data.subproducts,
-            limit_stock = int(data.stock * 0.1)  
+            limit_stock = int(data.stock * 0.1),
+            section = data.section  
         )   
         db.session.add(new_product)
         db.session.commit()
@@ -56,7 +61,8 @@ def create_product():
                 "name": new_product.name,
                 "price": new_product.price,
                 "description": new_product.description,
-                "stock": new_product.stock
+                "stock": new_product.stock,
+                "section": new_product.section
             }
         }), 201  
         
@@ -99,7 +105,8 @@ def edit_product(product_id):
                 "price": to_edit.price,
                 "description": to_edit.description,
                 "stock": to_edit.stock,
-                "subproducts": to_edit.subproducts
+                "subproducts": to_edit.subproducts,
+                "section": to_edit.section
             }
 })    
     except ValidationError as e:
@@ -141,6 +148,70 @@ def delete_product(data_id):
     except:
         db.session.rollback()
         return jsonify ({"error": "Error al eliminar producto"}), 500
+    
+    
+    
+### PRODUCTOS DESTACADOS ###
 
+
+
+# VER PRODUCTOS DESTACADOS
+@admin_products_bp.route("/featured_products/all", methods = ["GET"])
+def get_all_featured_products():
+    featured_products = db.session.query(ProductTable).filter(ProductTable.featured == True).all()
+    if not featured_products :
+        return jsonify({"message": "No hay productos destacados actualmente"})
+    
+    try:
+        return jsonify([p.to_dict() for p in featured_products])
+     
+    except Exception as e:
+        return jsonify({
+            "error": "Error interno del servidor",
+            "details": str(e)
+        }), 500
+
+
+
+# CONVERTIR PRODUCTO A DESTACADO (ID)
+@admin_products_bp.route("/featured_products/to_featured/<product_id>", methods = ["PUT"])
+def turn_featured(product_id):
+    product = db.session.query(ProductTable).filter(ProductTable.product_id == product_id).first()
+    if not product:
+        return jsonify({"message": "No existe producto con esta id"}), 404
+    
+    try:
+        product.featured = True
+        db.session.commit()
+        return jsonify ({"message": "Producto convertido a destacado exitosamente"})
+        
+    except Exception as e:
+        db.session.rollback()  
+        return jsonify({
+            "error": "Error interno del servidor",
+            "details": str(e)
+        }), 500
+
+
+
+# CONVERTIR PRODUCTO A REGULAR (ID)
+@admin_products_bp.route("/featured_products/to_regular/<product_id>", methods = ["PUT"])
+def turn_regular(product_id):
+    product = db.session.query(ProductTable).filter(ProductTable.product_id == product_id).first()
+    if not product:
+        return jsonify({"message": "No existe producto con esta id"}), 404
+    
+    try:
+        product.featured = False
+        db.session.commit()
+        return jsonify ({"message": "Producto convertido a regular exitosamente"})
+        
+    except Exception as e:
+        db.session.rollback()  
+        return jsonify({
+            "error": "Error interno del servidor",
+            "details": str(e)
+        }), 500
+        
 
     

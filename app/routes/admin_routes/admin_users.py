@@ -12,7 +12,18 @@ admin_users_bp = Blueprint("admin_users", __name__, url_prefix="/admin")
 @admin_users_bp.route("/all_users")
 def get_all_users():
     users = db.session.query(UserTable).all()
-    return jsonify([p.to_dict() for p in users])
+    if not users:
+        return jsonify({"message": "No hay usuarios registrados"})
+    try:
+        return jsonify([p.to_dict() for p in users])
+    
+    except Exception as e:
+        return jsonify({
+            "error": "Error interno del servidor",
+            "details": str(e)
+        }), 500
+
+    
 
 
 

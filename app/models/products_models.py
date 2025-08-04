@@ -2,11 +2,6 @@ from pydantic import BaseModel, Field, ConfigDict
 from database import db
 from typing import Optional
 
-# Modelo basico que heredan todos
-class ProductBase(BaseModel):
-    name: str = Field(max_length=50)
-    description: str = Field(max_length=300)
-    price: float = Field(ge=0)
 
 # Clase para crear la tabla de los productos
 class ProductTable(db.Model):
@@ -20,6 +15,9 @@ class ProductTable(db.Model):
     subproducts = db.Column(db.Boolean, default=False)    
     subproducts_list = db.relationship("SubproductTable", backref = "product", lazy = "joined")
     limit_stock = db.Column(db.Integer, nullable = False)
+    featured = db.Column(db.Boolean, default = False)
+    section = db.Column(db.String(100), nullable = False)
+    
     
     def to_dict(self):
         return {
@@ -29,7 +27,9 @@ class ProductTable(db.Model):
             'description': self.description,
             'stock': self.stock,
             'subproducts': self.subproducts,
-            'limit_stock': self.limit_stock  
+            'limit_stock': self.limit_stock,
+            'featured': self.featured,
+            'section': self.section 
         }
     
     def to_public(self):
@@ -37,7 +37,8 @@ class ProductTable(db.Model):
             'name': self.name,
             'price': self.price,
             'description': self.description,
-            'stock': self.stock
+            'stock': self.stock,
+            'section': self.section
         }
     
     def to_all(self):
@@ -45,13 +46,20 @@ class ProductTable(db.Model):
             'name': self.name,
             'price': self.price,
             'description': self.description,
-            'stock': self.stock,
+            'stock': self.stock, 
+            'section': self.section,
             'subproducts_list': [p.to_public() for p in self.subproducts_list] if self.subproducts_list else None
         }
 
 
 
-    
+    # Modelo basico que heredan todos
+class ProductBase(BaseModel):
+    name: str = Field(max_length=50)
+    description: str = Field(max_length=300)
+    price: float = Field(ge=0)
+    section: str = Field(max_length=100)
+
         
 # Modelo para crear un nuevo producto    
 class ProductCreate(ProductBase):

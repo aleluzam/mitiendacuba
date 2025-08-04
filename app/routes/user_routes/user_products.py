@@ -29,12 +29,52 @@ def get_product(product_id):
         return jsonify ({"error": "Producto no encontrado"}), 404
     try:
         return jsonify(product.to_all())
+    
     except Exception as e:
         db.session.rollback()  
         return jsonify({
             "error": "Error interno del servidor",
             "details": str(e)
         }), 500
+
+
+# MOSTRAR PRODUCTOS DESTACADOS CON SUBPRODUCTOS
+@user_products_bp.route("/featured_products/all", methods = ["GET"])
+def get_featured_products_with_subproducts():
+    featured_products = db.session.query(ProductTable).filter(ProductTable.featured == True).all()
+    if not featured_products :
+        return jsonify({"message": "No hay productos destacados actualmente"})
+    
+    try:
+        return jsonify([p.to_all() for p in featured_products])
+     
+    except Exception as e:
+        return jsonify({
+            "error": "Error interno del servidor",
+            "details": str(e)
+        }), 500
+
+
+
+### SECCIONES
+
+# VER PRODUCTOS POR SECCION
+@user_products_bp.route("/products/section/<section_name>", methods = ["GET"])
+def get_section_products(section_name):
+    section_products = db.session.query(ProductTable).filter(ProductTable.section == section_name).all()
+    if not section_products:
+        return jsonify ({"message": "No hay productos en esta seccion"})
+    
+    try:
+        return jsonify ([p.to_all() for p in section_products])
+    
+    except Exception as e:
+        return jsonify({
+            "error": "Error interno del servidor",
+            "details": str(e)
+        }), 500
+
+
 
 
 

@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 from dotenv import load_dotenv 
 from database import get_mysql_uri, db
 from routes.admin_routes.admin_users import admin_users_bp
@@ -22,6 +23,8 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = get_mysql_uri()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+CORS(app)
 
 # CONFIGURACIONES DEL CORREO
 app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')

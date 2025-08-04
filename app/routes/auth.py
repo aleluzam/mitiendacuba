@@ -26,7 +26,7 @@ def create_user():
         if not data:
             return jsonify({"error": " No se enviaron los datos"}), 400
         
-        required_fields = ['username', 'name', 'last_name', 'password']
+        required_fields = ['username', 'name', 'last_name', 'password', 'mail']
         for field in required_fields:
             if field not in data or not data[field]:
                 return jsonify({'error': f'El campo {field} es requerido'}), 400
@@ -49,7 +49,7 @@ def create_user():
             last_name = data['last_name'].strip().title(),
             mobile = data.get('mobile'), # puede ser None
             is_active = True,
-            mail = data['mail'] # lanza error si no existe
+            mail = data['mail'].strip().lower() # lanza error si no existe
         )
         
         db.session.add(new_user)
