@@ -1,9 +1,9 @@
-from database import db
+from app.database import db
 from flask import jsonify, Blueprint, request
-from models.codes_models import CodeTable
-from dependencies import generate_reset_code
-from mail_services import send_mail, send_mail_async
-from models.users_models import UserTable
+from app.models.codes_models import CodeTable
+from app.dependencies import generate_reset_code
+from app.mail_services import send_mail, send_mail_async
+from app.models.users_models import UserTable
 from datetime import datetime, timezone, tzinfo
 from werkzeug.security import generate_password_hash
 

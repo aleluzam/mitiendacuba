@@ -1,18 +1,18 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv 
-from database import get_mysql_uri, db
-from routes.admin_routes.admin_users import admin_users_bp
-from routes.admin_routes.admin_products import admin_products_bp
-from routes.admin_routes.admin_subproducts import admin_subproducts_bp
-from routes.admin_routes.admin_sales import admin_sales_bp
-from routes.admin_routes.admin_alerts import admin_alerts_bp
-from routes.auth import auth_bp
-from routes.user_routes.user_products import user_products_bp
-from routes.user_routes.user_users import user_users_bp
-from routes.user_routes.user_sales import user_sales_bp
-from routes.mail_codes import mail_codes_bp
-from routes.notifications import notifications_bp
+from app.database import get_mysql_uri, db
+from app.routes.admin_routes.admin_users import admin_users_bp
+from app.routes.admin_routes.admin_products import admin_products_bp
+from app.routes.admin_routes.admin_subproducts import admin_subproducts_bp
+from app.routes.admin_routes.admin_sales import admin_sales_bp
+from app.routes.admin_routes.admin_alerts import admin_alerts_bp
+from app.routes.auth import auth_bp
+from app.routes.user_routes.user_products import user_products_bp
+from app.routes.user_routes.user_users import user_users_bp
+from app.routes.user_routes.user_sales import user_sales_bp
+from app.routes.mail_codes import mail_codes_bp
+from app.routes.notifications import notifications_bp
 from flask_mail import Mail, Message
 import os
 

@@ -1,11 +1,11 @@
-from models.sales_models import SaleTable, ItemsTable
+from app.models.sales_models import SaleTable, ItemsTable
 from flask import jsonify, request, Blueprint
-from database import db
+from app.database import db
 from datetime import datetime, UTC, timezone
 from zoneinfo import ZoneInfo
-from models.products_models import ProductTable
-from models.subproducts_models import SubproductTable
-from dependencies import update_product_from_subproducts
+from app.models.products_models import ProductTable
+from app.models.subproducts_models import SubproductTable
+from app.dependencies import update_product_from_subproducts
 
 admin_sales_bp = Blueprint("admin_sales", __name__, url_prefix=("/admin"))
 

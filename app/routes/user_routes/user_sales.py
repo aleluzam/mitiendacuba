@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint, jsonify
-from database import db
-from dependencies import get_id_from_jwt
-from models.sales_models import SaleTable
+from app.database import db
+from app.dependencies import get_id_from_jwt
+from app.models.sales_models import SaleTable
 
 user_sales_bp = Blueprint("user_sales", __name__, url_prefix=("/user"))
 

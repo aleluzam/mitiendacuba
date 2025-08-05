@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, Blueprint
-from database import db
-from models.alerts_models import AlertTable
-from models.products_models import ProductTable
+from app.database import db
+from app.models.alerts_models import AlertTable
+from app.models.products_models import ProductTable
 from zoneinfo import ZoneInfo
 from datetime import datetime
 

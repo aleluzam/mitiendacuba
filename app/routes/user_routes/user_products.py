@@ -1,6 +1,6 @@
 from flask import request, jsonify, Blueprint
-from database import db
-from models.products_models import ProductPublic, ProductTable
+from app.database import db
+from app.models.products_models import ProductPublic, ProductTable
 from pydantic import ValidationError
 
 user_products_bp = Blueprint("user_products", __name__, url_prefix="/user")

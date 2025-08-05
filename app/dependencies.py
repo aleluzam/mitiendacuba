@@ -1,7 +1,7 @@
-from database import db
+from app.database import db
 from flask import jsonify, request
-from models.products_models import ProductTable
-from models.subproducts_models import SubproductTable
+from app.models.products_models import ProductTable
+from app.models.subproducts_models import SubproductTable
 from sqlalchemy import func
 import jwt
 from dotenv import load_dotenv

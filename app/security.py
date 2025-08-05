@@ -1,12 +1,12 @@
 from flask import request, jsonify
-from database import db
-from models.users_models import UserTable
+from app.database import db
+from app.models.users_models import UserTable
 from werkzeug.security import check_password_hash
 from functools import wraps
 import jwt
 import os
 from dotenv import load_dotenv
-from dependencies import get_id_from_jwt
+from app.dependencies import get_id_from_jwt
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
