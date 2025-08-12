@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv 
-from app.database import get_mysql_uri, db
+from app.database import get_mysql_uri, db, get_uri
 from app.routes.admin_routes.admin_users import admin_users_bp
 from app.routes.admin_routes.admin_products import admin_products_bp
 from app.routes.admin_routes.admin_subproducts import admin_subproducts_bp
@@ -14,13 +14,14 @@ from app.routes.user_routes.user_sales import user_sales_bp
 from app.routes.mail_codes import mail_codes_bp
 from app.routes.notifications import notifications_bp
 from flask_mail import Mail, Message
+import psycopg2
 import os
 
 load_dotenv()
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = get_mysql_uri()
+app.config["SQLALCHEMY_DATABASE_URI"] = get_uri()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
