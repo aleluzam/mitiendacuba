@@ -9,14 +9,14 @@ class UserTable(db.Model):
     __tablename__ = 'users'
     
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(15), nullable=False, unique=True)  
-    password_hash = db.Column(db.String(255), nullable=False)  
-    name = db.Column(db.String(15), nullable=False)
-    last_name = db.Column(db.String(15), nullable=False)
-    mobile = db.Column(db.String(15), nullable=True)  
+    username = db.Column(db.String(50), nullable=False, unique=True)  
+    password_hash = db.Column(db.String(1000), nullable=False)  
+    name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
+    mobile = db.Column(db.String(25), nullable=True)  
     is_active = db.Column(db.Boolean, default=True, nullable=False)  
-    mail = db.Column(db.String(120), unique = True, nullable = False)
-    role = db.Column(db.String(10), nullable = False, default = "user")
+    mail = db.Column(db.String(150), unique = True, nullable = False)
+    role = db.Column(db.String(25), nullable = False, default = "user")
     
 
     def to_dict(self):
