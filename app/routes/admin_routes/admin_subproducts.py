@@ -10,6 +10,7 @@ admin_subproducts_bp = Blueprint("subproducts", __name__, url_prefix="/admin")
 
 
 # MOSTRAR TODOS LOS SUBPRODUCTOS
+@login_required
 @admin_subproducts_bp.route("/all_subproducts", methods=["GET"])
 def all_subproducts():
     subproducts = db.session.query(SubproductTable).all()
