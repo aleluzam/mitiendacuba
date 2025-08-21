@@ -4,6 +4,7 @@ from app.models.products_models import ProductTable
 from app.database import db
 from pydantic import ValidationError
 from app.dependencies import update_product_from_subproducts
+from app.security import login_required
 
 admin_subproducts_bp = Blueprint("subproducts", __name__, url_prefix="/admin")
 
