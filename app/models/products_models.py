@@ -49,6 +49,7 @@ class ProductTable(db.Model):
             'description': self.description,
             'stock': self.stock, 
             'section': self.section,
+            'featured': self.featured,
             'subproducts_list': [p.to_public() for p in self.subproducts_list] if self.subproducts_list else None
         }
 
