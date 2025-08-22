@@ -38,7 +38,8 @@ class ProductTable(db.Model):
             'price': self.price,
             'description': self.description,
             'stock': self.stock,
-            'section': self.section
+            'section': self.section,
+            'featured': self.featured
         }
     
     def to_all(self):
