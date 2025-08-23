@@ -133,8 +133,8 @@ def login():
                 "token": token,
                 "user": {
                     "id": user.user_id,
-                    "username": user.username
-                    #"role": user.role
+                    "username": user.username,
+                    "role": user.role
                 }
             })
         else:
