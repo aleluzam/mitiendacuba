@@ -17,6 +17,7 @@ class ProductTable(db.Model):
     limit_stock = db.Column(db.Integer, nullable = False)
     featured = db.Column(db.Boolean, default = False)
     section = db.Column(db.String(100), nullable = False)
+    img_url = db.Column(db.String(150))
     
     
     def to_dict(self):
@@ -29,7 +30,8 @@ class ProductTable(db.Model):
             'subproducts': self.subproducts,
             'limit_stock': self.limit_stock,
             'featured': self.featured,
-            'section': self.section 
+            'section': self.section,
+            'img_url': self.img_url 
         }
     
     def to_public(self):
@@ -39,7 +41,9 @@ class ProductTable(db.Model):
             'description': self.description,
             'stock': self.stock,
             'section': self.section,
-            'featured': self.featured
+            'featured': self.featured,
+            'img_url': self.img_url 
+
         }
     
     def to_all(self):
@@ -51,6 +55,7 @@ class ProductTable(db.Model):
             'section': self.section,
             'featured': self.featured,
             'product_id': self.product_id,
+            'img_url': self.img_url,
             'subproducts_list': [p.to_public() for p in self.subproducts_list] if self.subproducts_list else None
         }
 
@@ -62,6 +67,7 @@ class ProductBase(BaseModel):
     description: str = Field(max_length=300)
     price: float = Field(ge=0)
     section: str = Field(max_length=100)
+    img_url: str | None = None
 
         
 # Modelo para crear un nuevo producto    
@@ -86,4 +92,5 @@ class ProductUpdate(ProductBase):
     description: str | None = None
     stock: int | None = None
     subproducts: bool | None = None
+    
     
