@@ -68,33 +68,9 @@ def create_user():
                 'mail': new_user.mail
             }
         }), 201
+        
     except Exception as e:
-       print("🚨 === ERROR EN REGISTRO DE USUARIO ===")
-       print(f"🚨 ERROR: {str(e)}")
-       print(f"🚨 TIPO DE ERROR: {type(e).__name__}")
-      
-       # Información adicional del error
-       import traceback
-       print(f"🚨 TRACEBACK COMPLETO:")
-       print(traceback.format_exc())
-      
-       # Información de contexto
-       try:
-           print(f"🚨 DATOS RECIBIDOS: {request.get_json()}")
-       except:
-           print("🚨 No se pudieron obtener los datos del request")
-          
-       try:
-           print(f"🚨 MÉTODO: {request.method}")
-           print(f"🚨 URL: {request.url}")
-           print(f"🚨 HEADERS: {dict(request.headers)}")
-       except:
-           print("🚨 No se pudo obtener información del request")
-      
-       print("🚨 Haciendo rollback de la transacción...")
        db.session.rollback()
-       print("🚨 === FIN ERROR REGISTRO ===")
-      
        return jsonify({'error': f'Error interno del servidor: {str(e)}'}), 500
 
 
