@@ -122,7 +122,7 @@ def login():
     
 ### RESTABLECER PASSWORD
 
-@auth_bp.route("/all_codes")
+@auth_bp.route("/all_codes", methods = ["GET"])
 def get_all_codes():
     try:
         codes = db.session.query(CodeTable).all()
