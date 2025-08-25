@@ -1,4 +1,4 @@
-from database import db
+from app.database import db
 from pydantic import BaseModel, Field, ConfigDict
 
 class SectionTable(db.Model):
