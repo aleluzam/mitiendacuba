@@ -10,9 +10,7 @@ class SectionTable(db.Model):
     description = db.Column(db.String(500))
     
     def get_name(self):
-        return {
-            "section": self.name
-        }
+        return f"{self.name}"
     
 class SectionCreate(BaseModel):
     model_config = ConfigDict(from_attributes = True)
