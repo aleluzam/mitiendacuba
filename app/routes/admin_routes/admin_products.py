@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from app.database import db
 from app.models.products_models import ProductTable, ProductCreate, ProductUpdate
 from app.models.subproducts_models import SubproductTable
+from app.models.sections_models import SectionCreate, SectionTable, SectionPublic
 from app.security import login_required
 from app.dependencies import update_product_from_subproducts
 from pydantic import ValidationError
@@ -49,7 +50,7 @@ def create_product():
             stock = data.stock,
             subproducts = data.subproducts,
             limit_stock = int(data.stock * 0.1),
-            section = data.section  
+            section_id = data.section_id  
         )   
         db.session.add(new_product)
         db.session.commit()
@@ -62,7 +63,7 @@ def create_product():
                 "price": new_product.price,
                 "description": new_product.description,
                 "stock": new_product.stock,
-                "section": new_product.section
+                "section": new_product.section_id
             }
         }), 201  
         
@@ -105,8 +106,7 @@ def edit_product(product_id):
                 "price": to_edit.price,
                 "description": to_edit.description,
                 "stock": to_edit.stock,
-                "subproducts": to_edit.subproducts,
-                "section": to_edit.section
+                "subproducts": to_edit.subproducts
             }
 })    
     except ValidationError as e:
@@ -214,4 +214,69 @@ def turn_regular(product_id):
         }), 500
         
 
+# CREAR SECCION
+@admin_products_bp.route("/create_section", methods = ["POST"])
+def create_section():
+    try:
+        data = SectionCreate.model_validate(request.get_json())
+        
+        new_section = SectionTable(
+            name = data.name,
+            description = data.description,
+            img = data.img
+        )
+        db.session.add(new_section)
+        db.session.commit()
+        db.session.refresh(new_section)
+        
+        return jsonify ({"message": "Seccion creada satisfactoriamente",
+                         "section": {
+                             "name": new_section.name,
+                             "description": new_section.description
+                         }})
+    
+    except Exception as e:
+        db.session.rollback()  
+        return jsonify({
+            "error": "Error interno del servidor",
+            "details": str(e)
+        }), 500
+        
+    except ValidationError as e:
+        return jsonify({
+            "error": "Datos inválidos",
+            "details": [{"field": err['loc'][0], "message": err['msg']} 
+                       for err in e.errors()]
+        }), 400 
+        
+        
+# VER TODAS LAS SECCIONES
+@admin_products_bp.route("/all_sections", methods = ["GET"])
+def get_all_sections():
+    
+    all_sections = db.session.query(SectionTable).all()
+    if not all_sections:
+        return jsonify ({"message": "No hay secciones actualmente"})
+    
+    try:
+        
+        return jsonify ([SectionPublic.model_validate(section).model_dump() for section in all_sections])
+
+    except Exception as e:
+        db.session.rollback()  
+        return jsonify({
+            "error": "Error interno del servidor",
+            "details": str(e)
+        }), 500
+        
+    except ValidationError as e:
+        return jsonify({
+            "error": "Datos inválidos",
+            "details": [{"field": err['loc'][0], "message": err['msg']} 
+                       for err in e.errors()]
+        }), 400 
+        
+
+
+    
     

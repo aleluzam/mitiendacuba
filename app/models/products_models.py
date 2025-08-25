@@ -13,11 +13,13 @@ class ProductTable(db.Model):
     description = db.Column(db.Text)
     stock = db.Column(db.Integer, nullable=False)
     subproducts = db.Column(db.Boolean, default=False)    
-    subproducts_list = db.relationship("SubproductTable", backref = "product", lazy = "joined")
     limit_stock = db.Column(db.Integer, nullable = False)
     featured = db.Column(db.Boolean, default = False)
-    section = db.Column(db.String(100), nullable = False)
     img_url = db.Column(db.String(150))
+    section_id = db.Column(db.Integer, db.ForeignKey("sections.id"), nullable = False)
+
+    subproducts_list = db.relationship("SubproductTable", backref = "product", lazy = "joined")
+    section = db.relationship("SectionTable", lazy = "joined", backref = "product")
     
     
     def to_dict(self):
@@ -30,7 +32,7 @@ class ProductTable(db.Model):
             'subproducts': self.subproducts,
             'limit_stock': self.limit_stock,
             'featured': self.featured,
-            'section': self.section,
+            'section': self.section.get_name() if self.section else None,
             'img_url': self.img_url 
         }
     
@@ -40,7 +42,7 @@ class ProductTable(db.Model):
             'price': self.price,
             'description': self.description,
             'stock': self.stock,
-            'section': self.section,
+            'section': self.section.get_name() if self.section else None,
             'featured': self.featured,
             'img_url': self.img_url 
 
@@ -52,7 +54,7 @@ class ProductTable(db.Model):
             'price': self.price,
             'description': self.description,
             'stock': self.stock, 
-            'section': self.section,
+            'section': self.section.get_name() if self.section else None,
             'featured': self.featured,
             'product_id': self.product_id,
             'img_url': self.img_url,
@@ -74,6 +76,7 @@ class ProductBase(BaseModel):
 class ProductCreate(ProductBase):
     stock: int = Field(ge=0)
     subproducts: bool = Field(default=False)
+    section_id: int
     
     model_config = ConfigDict(from_attributes=True)
 
@@ -92,5 +95,6 @@ class ProductUpdate(ProductBase):
     description: str | None = None
     stock: int | None = None
     subproducts: bool | None = None
+    section_id: int | None = None
     
     
