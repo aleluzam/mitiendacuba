@@ -68,7 +68,6 @@ class ProductBase(BaseModel):
     name: str = Field(max_length=50)
     description: str = Field(max_length=300)
     price: float = Field(ge=0)
-    section: str = Field(max_length=100)
     img_url: str | None = None
 
         
