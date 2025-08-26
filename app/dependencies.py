@@ -49,9 +49,65 @@ def get_id_from_jwt():
 def generate_reset_code():
     return secrets.randbelow(900000) + 100000
        
-            
-    
 
+def validate_image_file(file):
+    """
+    Valida un archivo de imagen
+    Returns: dict con 'valid' (bool) y 'error' (str si hay error)
+    """
     
+    if not file or file.filename == "":
+        return {"valid": False, "error": "Archivo vacío"}
     
+    allowed_extensions = {"png", "jpg", "jpeg", "gif", "webp", "bmp", "tiff"}
+    file_extension = file.filename.rsplit(".", 1)[1].lower() if "." in file.filename else ""
     
+    if file_extension not in allowed_extensions:
+        return {"valid": False, "error": f"Extensión no permitida. Formatos permitidos: {', '.join(allowed_extensions)}"}
+    
+    allowed_mimes = [
+        'image/jpeg', 'image/png', 'image/gif', 
+        'image/webp', 'image/bmp', 'image/tiff'
+    ]
+        
+    if file.content_type not in allowed_mimes:
+        return {
+            'valid': False, 
+            'error': f'Tipo de archivo no válido. Recibido: {file.content_type}'
+        }
+    
+    # Obtener tamaño del archivo
+    file.seek(0, 2)  
+    file_size = file.tell() 
+    file.seek(0)  
+    
+    min_size = 1024  # 1KB
+    if file_size < min_size:
+        return {'valid': False, 'error': 'Archivo muy pequeño (mínimo 1KB)'}
+    
+    max_size = 10 * 1024 * 1024  # 10MB
+    if file_size > max_size:
+        return {
+            'valid': False, 
+            'error': f'Archivo muy grande. Máximo {max_size//1024//1024}MB, recibido {file_size//1024//1024}MB'
+        }
+    
+    # Validar que sea una imagen válida
+    try:
+        from PIL import Image
+        
+        file.seek(0)
+        img = Image.open(file)
+        img.verify() 
+        file.seek(0) 
+        
+        if img.width < 10 or img.height < 10:
+            return {'valid': False, 'error': 'Imagen muy pequeña (mínimo 10x10 píxeles)'}
+        
+        if img.width > 5000 or img.height > 5000:
+            return {'valid': False, 'error': 'Imagen muy grande (máximo 5000x5000 píxeles)'}
+            
+    except Exception as e:
+        return {'valid': False, 'error': 'El archivo no es una imagen válida'}
+    
+    return {"valid": True} 

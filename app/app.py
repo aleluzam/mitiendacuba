@@ -16,6 +16,8 @@ from app.routes.notifications import notifications_bp
 from flask_mail import Mail, Message
 import psycopg2
 import os
+import cloudinary
+import cloudinary.api
 
 load_dotenv()
 
@@ -54,6 +56,8 @@ app.register_blueprint(mail_codes_bp)
 app.register_blueprint(notifications_bp)
 
 db.init_app(app) # inicia la conexion con la base de datos
+
+cloudinary.config()
 
 # Crear las tablas
 with app.app_context():
