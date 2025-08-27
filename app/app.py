@@ -16,25 +16,8 @@ from app.routes.notifications import notifications_bp
 from flask_mail import Mail, Message
 import psycopg2
 import os
-try:
-    import cloudinary
-    import cloudinary.uploader
-    import cloudinary.api
-    print("✅ Cloudinary ya disponible")
-except ImportError:
-    print("❌ Instalando cloudinary...")
-    try:
-        subprocess.check_call([
-            sys.executable, "-m", "pip", "install", 
-            "cloudinary==1.36.0", "--target", "/tmp", "--quiet"
-        ])
-        sys.path.insert(0, "/tmp")
-        import cloudinary
-        import cloudinary.uploader
-        import cloudinary.api
-        print("✅ Cloudinary instalado")
-    except Exception as e:
-        print(f"❌ Error: {e}")
+import cloudinary
+import cloudinary.api
 
 load_dotenv()
 
