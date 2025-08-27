@@ -26,8 +26,7 @@ def upload_img():
             width = 1200,
             height = 800,
             crop = 'limit',
-            quality = 'auto:good',
-            format = "auto"
+            quality = 'auto:good'
         )
         
         return jsonify({
