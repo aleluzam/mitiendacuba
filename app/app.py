@@ -13,6 +13,7 @@ from app.routes.user_routes.user_users import user_users_bp
 from app.routes.user_routes.user_sales import user_sales_bp
 from app.routes.mail_codes import mail_codes_bp
 from app.routes.notifications import notifications_bp
+from app.routes.image_manager import img_manager_bp
 from flask_mail import Mail, Message
 import psycopg2
 import os
@@ -54,6 +55,7 @@ app.register_blueprint(user_users_bp)
 app.register_blueprint(user_sales_bp)
 app.register_blueprint(mail_codes_bp)
 app.register_blueprint(notifications_bp)
+app.register_blueprint(img_manager_bp)
 
 db.init_app(app) # inicia la conexion con la base de datos
 
