@@ -7,13 +7,14 @@ from app.routes.admin_routes.admin_products import admin_products_bp
 from app.routes.admin_routes.admin_subproducts import admin_subproducts_bp
 from app.routes.admin_routes.admin_sales import admin_sales_bp
 from app.routes.admin_routes.admin_alerts import admin_alerts_bp
+from app.routes.admin_routes.image_manager import img_manager_bp
+from app.routes.admin_routes.admin_sections import admin_sections_bp
 from app.routes.auth import auth_bp
 from app.routes.user_routes.user_products import user_products_bp
 from app.routes.user_routes.user_users import user_users_bp
 from app.routes.user_routes.user_sales import user_sales_bp
 from app.routes.mail_codes import mail_codes_bp
 from app.routes.notifications import notifications_bp
-from app.routes.admin_routes.image_manager import img_manager_bp
 from flask_mail import Mail, Message
 import psycopg2
 import os
@@ -56,6 +57,7 @@ app.register_blueprint(user_sales_bp)
 app.register_blueprint(mail_codes_bp)
 app.register_blueprint(notifications_bp)
 app.register_blueprint(img_manager_bp)
+app.register_blueprint(admin_sections_bp)
 
 db.init_app(app) # inicia la conexion con la base de datos
 

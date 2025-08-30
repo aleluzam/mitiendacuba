@@ -26,6 +26,12 @@ class SectionPublic(BaseModel):
     img: str = Field(max_length=300)
     id: int
     
+class SectionUpdate(BaseModel):
+    name: str | None = Field(None, min_length=5, max_length=100)
+    img: str | None = Field(None, max_length=300)
+    description: str | None = Field(None, min_length=15, max_length=500)
+
+    
     
     
     

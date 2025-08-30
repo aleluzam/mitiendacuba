@@ -65,7 +65,7 @@ class ProductTable(db.Model):
 
     # Modelo basico que heredan todos
 class ProductBase(BaseModel):
-    name: str = Field(max_length=50)
+    name: str = Field(min_length=3, max_length=50)
     description: str = Field(max_length=300)
     price: float = Field(ge=0)
     img_url: str | None = None
@@ -88,11 +88,11 @@ class ProductPublic(ProductBase):
 
 
 # Modelo para actualizar un producto
-class ProductUpdate(ProductBase):
-    name: str | None = None
-    price: float | None = None
-    description: str | None = None
-    stock: int | None = None
+class ProductUpdate(BaseModel):
+    name: str | None = Field(None, min_length=3, max_length=50)
+    price: float | None = Field(None, ge=0)
+    description: str | None = Field(None, max_length=300)
+    stock: int | None = Field(None, ge=0)
     subproducts: bool | None = None
     section_id: int | None = None
     
