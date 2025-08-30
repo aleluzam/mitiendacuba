@@ -51,10 +51,6 @@ def generate_reset_code():
        
 
 def validate_image_file(file):
-    """
-    Valida un archivo de imagen
-    Returns: dict con 'valid' (bool) y 'error' (str si hay error)
-    """
     
     if not file or file.filename == "":
         return {"valid": False, "error": "Archivo vacío"}
@@ -76,23 +72,21 @@ def validate_image_file(file):
             'error': f'Tipo de archivo no válido. Recibido: {file.content_type}'
         }
     
-    # Obtener tamaño del archivo
     file.seek(0, 2)  
     file_size = file.tell() 
     file.seek(0)  
     
-    min_size = 1024  # 1KB
+    min_size = 1024
     if file_size < min_size:
         return {'valid': False, 'error': 'Archivo muy pequeño (mínimo 1KB)'}
     
-    max_size = 10 * 1024 * 1024  # 10MB
+    max_size = 10 * 1024 * 1024 
     if file_size > max_size:
         return {
             'valid': False, 
             'error': f'Archivo muy grande. Máximo {max_size//1024//1024}MB, recibido {file_size//1024//1024}MB'
         }
     
-    # Validar que sea una imagen válida
     try:
         from PIL import Image
         

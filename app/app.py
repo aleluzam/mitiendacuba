@@ -13,7 +13,7 @@ from app.routes.user_routes.user_users import user_users_bp
 from app.routes.user_routes.user_sales import user_sales_bp
 from app.routes.mail_codes import mail_codes_bp
 from app.routes.notifications import notifications_bp
-from app.routes.image_manager import img_manager_bp
+from app.routes.admin_routes.image_manager import img_manager_bp
 from flask_mail import Mail, Message
 import psycopg2
 import os

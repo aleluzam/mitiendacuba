@@ -46,12 +46,10 @@ def upload_img():
         print(f"Tipo de error: {type(e).__name__}")
         
         return jsonify({
-            "success": False, 
-            "error": "Error interno del servidor al subir la imagen"
+            "error": "Error interno del servidor",
+            "details": str(e)
         }), 500
-    
-    
-    
+
     
     
     
