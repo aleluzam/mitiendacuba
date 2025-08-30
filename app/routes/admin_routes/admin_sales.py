@@ -22,6 +22,9 @@ def get_all_sales():
 def get_pending_sales():
     try: 
         sales = db.session.query(SaleTable).filter(SaleTable.completed == False).all()
+        if not sales:
+            return jsonify ({"message": "No hay ventas sin completar actualmente"})
+        
         return jsonify ([s.to_all() for s in sales])
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -33,6 +36,9 @@ def get_pending_sales():
 def get_completed_sales():
     try: 
         sales = db.session.query(SaleTable).filter(SaleTable.completed == True).all()
+        if not sales:
+            return jsonify ({"message": "No hay ventas completadas actualmente"})
+        
         return jsonify ([s.to_all() for s in sales])
     except Exception as e:
         return jsonify({"error": str(e)}), 500
