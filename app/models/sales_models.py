@@ -12,7 +12,7 @@ class SaleTable(db.Model):
     total_amount = db.Column(db.Float, nullable = False)
     created_at = db.Column(db.DateTime, default = lambda: datetime.now(timezone.utc))
     items = db.relationship("ItemsTable", backref = "sale", lazy = "joined")
-    completed = db.Column(db.Bolean, default = False)
+    completed = db.Column(db.Boolean, default = False)
     
     def to_dict(self):
         return {
