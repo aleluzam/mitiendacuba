@@ -94,6 +94,7 @@ def get_all_sections():
         return jsonify ([SectionPublic.model_validate(section).model_dump() for section in all_sections])
 
     except ValidationError as e:
+        db.session.rollback()
         return jsonify({
             "error": "Datos inválidos",
             "details": [{"field": err['loc'][0], "message": err['msg']} 
