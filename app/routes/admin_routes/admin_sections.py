@@ -62,7 +62,7 @@ def edit_section(id):
         db.session.commit()
         db.session.refresh(section_to_edit)
         return jsonify ({"message": "Seccion editada correctamente",
-                         "section": SectionPublic.model_validate(section_to_edit)})
+                         "section": SectionPublic.model_validate(section_to_edit).model_dump()})
     
     except ValidationError as e:
         return jsonify({
