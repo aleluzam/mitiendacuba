@@ -12,6 +12,7 @@ class SaleTable(db.Model):
     total_amount = db.Column(db.Float, nullable = False)
     created_at = db.Column(db.DateTime, default = lambda: datetime.now(timezone.utc))
     items = db.relationship("ItemsTable", backref = "sale", lazy = "joined")
+    completed = db.Column(db.Bolean, default = False)
     
     def to_dict(self):
         return {
@@ -27,6 +28,7 @@ class SaleTable(db.Model):
             'user_id': self.user_id,
             'total_amount': self.total_amount,
             'created_at': self.created_at,
+            'completed': self.completed,
             'items': [p.to_dict() for p in self.items]
         }
     def to_user(self):
