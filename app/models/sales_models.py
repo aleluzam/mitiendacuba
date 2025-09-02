@@ -36,6 +36,7 @@ class SaleTable(db.Model):
             'sale_id': self.sale_id,
             'total_amount': self.total_amount,
             'created_at': self.created_at,
+            'completed': self.completed,
             'items': [p.to_dict() for p in self.items]
         }
 
