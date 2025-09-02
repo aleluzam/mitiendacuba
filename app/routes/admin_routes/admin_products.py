@@ -49,7 +49,8 @@ def create_product():
             stock = data.stock,
             subproducts = data.subproducts,
             limit_stock = int(data.stock * 0.1),
-            section_id = data.section_id  
+            section_id = data.section_id,
+            img_url = data.img_url
         )   
         db.session.add(new_product)
         db.session.commit()
