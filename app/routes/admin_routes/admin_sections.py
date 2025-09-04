@@ -1,6 +1,7 @@
 from flask import jsonify, request, Blueprint
 from app.database import db
 from app.models.sections_models import SectionCreate, SectionPublic, SectionTable, SectionUpdate
+from app.models.products_models import ProductTable
 from pydantic import ValidationError
 
 
@@ -109,4 +110,29 @@ def get_all_sections():
             "details": str(e)
         }), 500
         
+        
+# ELIMINAR SECCION
+@admin_sections_bp.route("/section/delete/<id>", methods = ["DELETE"])
+def delete_section(id):
+    section_to_delete = db.session.query(SectionTable).filter(SectionTable.id == id).first()
+    if not section_to_delete:
+        return jsonify ({"error": f"La seccion de id {id} no existe"}), 404
+    try:
+        verify_products = db.session.query(ProductTable).filter(ProductTable.section_id == id).all()
+        if verify_products:
+            for p in verify_products:
+                db.session.delete(p)
+            db.session.flush()
+                    
+        db.session.delete(section_to_delete)
+        db.session.commit()
+        return jsonify ({"message": "Seccion eliminada correctamente"})
+        
+    except Exception as e:
+        db.session.rollback()  
+        return jsonify({
+            "error": "Error interno del servidor",
+            "details": str(e)
+        }), 500
+
         
