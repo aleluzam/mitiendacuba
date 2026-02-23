@@ -1,10 +1,10 @@
 from flask import Blueprint, request, jsonify
-from app.models.subproducts_models import SubproductTable, SubproductCreate, SubproductUpdate
-from app.models.products_models import ProductTable
-from app.database import db
+from models.subproducts_models import SubproductTable, SubproductCreate, SubproductUpdate
+from models.products_models import ProductTable
+from database import db
 from pydantic import ValidationError
-from app.dependencies import update_product_from_subproducts
-from app.security import login_required
+from dependencies import update_product_from_subproducts
+from security import login_required
 
 admin_subproducts_bp = Blueprint("subproducts", __name__, url_prefix="/admin")
 

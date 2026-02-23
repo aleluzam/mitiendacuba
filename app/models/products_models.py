@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, ConfigDict
-from app.database import db
+from database import db
 from typing import Optional
 
 

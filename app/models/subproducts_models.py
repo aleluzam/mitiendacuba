@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from pydantic import BaseModel, Field
-from app.database import db
+from database import db
 from typing import Optional
 
 #Modelo para crear tabla

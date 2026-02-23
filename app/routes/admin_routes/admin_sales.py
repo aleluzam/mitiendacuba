@@ -1,7 +1,7 @@
-from app.models.sales_models import SaleTable
+from models.sales_models import SaleTable
 from flask import jsonify, request, Blueprint
-from app.database import db
-from app.dependencies import update_product_from_subproducts
+from database import db
+from dependencies import update_product_from_subproducts
 
 admin_sales_bp = Blueprint("admin_sales", __name__, url_prefix=("/admin"))
 

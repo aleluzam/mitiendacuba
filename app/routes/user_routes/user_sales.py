@@ -1,13 +1,13 @@
 from flask import Flask, Blueprint, jsonify, request
-from app.database import db
-from app.dependencies import get_id_from_jwt
-from app.models.sales_models import SaleTable
-from app.models.subproducts_models import SubproductTable
-from app.models.products_models import ProductTable
-from app.models.sales_models import ItemsTable
+from database import db
+from dependencies import get_id_from_jwt
+from models.sales_models import SaleTable
+from models.subproducts_models import SubproductTable
+from models.products_models import ProductTable
+from models.sales_models import ItemsTable
 from zoneinfo import ZoneInfo
 from datetime import datetime
-from app.dependencies import update_product_from_subproducts
+from dependencies import update_product_from_subproducts
 
 cuba_tz = ZoneInfo('America/Havana')
 

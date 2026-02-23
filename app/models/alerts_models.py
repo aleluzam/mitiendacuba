@@ -1,6 +1,6 @@
 from flask import Flask
 from pydantic import BaseModel
-from app.database import db
+from database import db
 from datetime import datetime, timezone
 
 

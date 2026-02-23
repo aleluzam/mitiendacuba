@@ -1,10 +1,10 @@
 from flask import request, jsonify, Blueprint
-from app.models.users_models import UserUpdate, UserTable, UserNewPassword
-from app.dependencies import get_id_from_jwt
-from app.database import db
+from models.users_models import UserUpdate, UserTable, UserNewPassword
+from dependencies import get_id_from_jwt
+from database import db
 from pydantic import ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.security import user_only
+from security import user_only
 
 
 user_users_bp = Blueprint("user_users", __name__, url_prefix=("/user"))

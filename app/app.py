@@ -1,20 +1,20 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv 
-from app.database import get_mysql_uri, db, get_uri
-from app.routes.admin_routes.admin_users import admin_users_bp
-from app.routes.admin_routes.admin_products import admin_products_bp
-from app.routes.admin_routes.admin_subproducts import admin_subproducts_bp
-from app.routes.admin_routes.admin_sales import admin_sales_bp
-from app.routes.admin_routes.admin_alerts import admin_alerts_bp
-from app.routes.admin_routes.image_manager import img_manager_bp
-from app.routes.admin_routes.admin_sections import admin_sections_bp
-from app.routes.auth import auth_bp
-from app.routes.user_routes.user_products import user_products_bp
-from app.routes.user_routes.user_users import user_users_bp
-from app.routes.user_routes.user_sales import user_sales_bp
-from app.routes.mail_codes import mail_codes_bp
-from app.routes.notifications import notifications_bp
+from database import get_mysql_uri, db, get_uri
+from routes.admin_routes.admin_users import admin_users_bp
+from routes.admin_routes.admin_products import admin_products_bp
+from routes.admin_routes.admin_subproducts import admin_subproducts_bp
+from routes.admin_routes.admin_sales import admin_sales_bp
+from routes.admin_routes.admin_alerts import admin_alerts_bp
+from services.image_manager import img_manager_bp
+from routes.admin_routes.admin_sections import admin_sections_bp
+from routes.auth import auth_bp
+from routes.user_routes.user_products import user_products_bp
+from routes.user_routes.user_users import user_users_bp
+from routes.user_routes.user_sales import user_sales_bp
+from routes.mail_codes import mail_codes_bp
+from routes.notifications import notifications_bp
 from flask_mail import Mail, Message
 import psycopg2
 import os
@@ -73,7 +73,7 @@ def hello():
 
 
 if __name__ == '__main__':
-    app.run(host = "0.0.0.0", port = 5000, debug=True)
+    app.run(host = "0.0.0.0", port = 8080, debug=True)
 
 
 

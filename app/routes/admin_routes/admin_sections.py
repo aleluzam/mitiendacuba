@@ -1,7 +1,7 @@
 from flask import jsonify, request, Blueprint
-from app.database import db
-from app.models.sections_models import SectionCreate, SectionPublic, SectionTable, SectionUpdate
-from app.models.products_models import ProductTable
+from database import db
+from models.sections_models import SectionCreate, SectionPublic, SectionTable, SectionUpdate
+from models.products_models import ProductTable
 from pydantic import ValidationError
 
 

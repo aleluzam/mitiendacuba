@@ -1,8 +1,8 @@
-from app.models.notifications_models import NotificationUserTable, NotificationTable
+from models.notifications_models import NotificationUserTable, NotificationTable
 from flask import request, jsonify, Blueprint
-from app.database import db
-from app.dependencies import get_id_from_jwt
-from app.models.users_models import UserTable
+from database import db
+from dependencies import get_id_from_jwt
+from models.users_models import UserTable
 
 notifications_bp = Blueprint("notifications", __name__)
 

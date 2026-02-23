@@ -1,14 +1,14 @@
 from flask import Blueprint, request, jsonify
-from app.database import db
-from app.security import verify_credentials
+from database import db
+from security import verify_credentials
 import jwt
 from datetime import datetime, timedelta, timezone
 import os
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash
-from app.models.users_models import UserTable
-from app.models.codes_models import CodeTable
-from app.dependencies import generate_reset_code
+from models.users_models import UserTable
+from models.codes_models import CodeTable
+from dependencies import generate_reset_code
 import secrets
 
 load_dotenv()
